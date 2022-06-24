@@ -84,31 +84,20 @@ def login():
 	}
 	# print(srun_portal_params)
 	srun_portal_res=requests.get(srun_portal_api,params=srun_portal_params,headers=header)
+	ret = curlify.to_curl(srun_portal_res.request,compressed=True)
+	with open("login.sh",'w') as file:
+		file.write(ret)
 	print(srun_portal_res.text)
 
-def logout():
-	srun_portal_params={
-	'callback': 'jQuery112409976310652735085_'+str(int(time.time()*1000)),
-	'action':'logout',
-	'ac_id':ac_id,
-	'ip':ip,
-	'username':username,
-	'_':int(time.time()*1000)
-	}
-	srun_portal_res=requests.get(srun_portal_api,params=srun_portal_params,headers=header)
-	print(srun_portal_res.text)
-	
+
 if __name__ == '__main__':
 	global username
 	global password1
-	username="1202121529"
-	password1="120031"
+	username="your username"	### 登录认证账号
+	password1="your password" ### 登录认证密码
 	init_getip()
 	get_token()
 	do_complex_work()
 	login()
 	res=requests.get(get_info_api,headers=header)
-	ret = curlify.to_curl(res.request,compressed=True)
-	with open("logout.sh",'w') as file:
-		file.write(ret)
 	print(res.text)
